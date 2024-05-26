@@ -43,7 +43,7 @@ def lyricsToPhonemes(lyricsFileName, printInfo=True, convertLowercase=True, DECT
                 try: lyricRepetitions = int(fooWord.split('!')[-1])
                 except:
                     print(f"Error converting \"{fooWord}\" to repeat lyrics   (line {currentLineIndex})")
-                    exit()
+                    exit(1)
                 continue
 
             elif fooWord[0] == '`':   # ` indicates to load syllable directly without modification
@@ -55,12 +55,12 @@ def lyricsToPhonemes(lyricsFileName, printInfo=True, convertLowercase=True, DECT
                 
                 if len(outPhonemes) == 0:
                     print(f"ERROR: Unable to match \"{fooWord}\" to phonemes in {lyricsFileName}   (line {currentLineIndex})")
-                    exit()
+                    exit(1)
                 
                 try: outPhonemes = [int(splitWord[0])] + outPhonemes
                 except:
                     print(f"Error converting \"{fooWord}\" to repeat lyrics   (line {currentLineIndex})")
-                    exit()
+                    exit(1)
                 
 
             elif '|' in fooWord:    # X|Y|Z|lyric indicates notes per specific syllables
@@ -70,7 +70,7 @@ def lyricsToPhonemes(lyricsFileName, printInfo=True, convertLowercase=True, DECT
 
                 if len(outPhonemes) == 0:
                     print(f"ERROR: Unable to match \"{fooWord}\" to phonemes in {lyricsFileName}   (line {currentLineIndex})")
-                    exit()
+                    exit(1)
                 
                 try:
                     outPhonemes = [[int(foo) for foo in splitWord[:-1]]] + outPhonemes
@@ -82,7 +82,7 @@ def lyricsToPhonemes(lyricsFileName, printInfo=True, convertLowercase=True, DECT
 
                 if len(outPhonemes) == 0:
                     print(f"ERROR: Unable to match \"{fooWord}\" to phonemes in {lyricsFileName}   (line {currentLineIndex})")
-                    exit()
+                    exit(1)
             
             currentLinePhonemes.append(outPhonemes)
             if printInfo: print(f"{fooWord} -> {currentLinePhonemes[-1]}")

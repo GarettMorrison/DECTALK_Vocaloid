@@ -1,0 +1,9 @@
+cmudict
+mido
+pydub
+pyrubberband
+pyyaml
+numpy
+scipy
+matplotlib
+opencv-python

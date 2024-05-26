@@ -6,11 +6,22 @@ import sys
 import os
 import time
 import math as m
+import shutil
+
+say = shutil.which("say.exe")
+if say:
+    say = f"{say} -w"
+else:
+    say = shutil.which("dtsay")
+    if not say:
+        print('DECtalk say program not found')
+        exit(1)
+    say = f"{say} -fo"
 
 # Make sure song is specified
 if len(sys.argv) < 2:
 	print('No song specified')
-	exit()
+	exit(1)
 
 songTitle = sys.argv[-1]
 
@@ -22,7 +33,7 @@ if not songTitle in os.listdir('songs'):
 	for foo in os.listdir('songs'):
 		print(f"   {foo}")
 	print(f'Song {songTitle} not found')
-	exit()
+	exit(1)
 
 
 
@@ -33,7 +44,7 @@ try:
 	settings_yaml = yaml.safe_load(file)
 except:
 	print(f"songs/{songTitle}/settings.yaml not loaded")
-	exit()
+	exit(1)
 
 # Constants loaded from settings.yaml
 if not 'noteOffset' in settings_yaml: noteOffset = -48
@@ -90,7 +101,7 @@ for foo in os.listdir(f"songs/{songTitle}"):
 # Catch if no midi file
 if midiFileName == '':
 	print("No midi file found")
-	exit()
+	exit(1)
 
 
 
@@ -486,10 +497,10 @@ if True:
 			# partialTxtFile = open(partialTxtFileName, 'r')
 			
 			outputWav = f"outputs/{songTitle}/{fooPartName}/{startTime}.wav"
-			DEC_proc = sp.Popen(f".{os.sep}say.exe -w {outputWav} < {partialTxtFile}", shell=True) # Finally actual run DECtalk! Opens a bunch of processes to run every file in parallel
+			DEC_proc = sp.Popen(f"{say} {outputWav} < {partialTxtFile}", shell=True) # Finally actual run DECtalk! Opens a bunch of processes to run every file in parallel
 			procSet.append(DEC_proc)
 
-			# if fooPartName == "Bass": print(f"./say.exe -w {outputWav} < {partialTxtFileName}")
+			# if fooPartName == "Bass": print(f"{say} {outputWav} < {partialTxtFileName}")
 
 # Wait for all of the DECtalk programs to exit
 ii=0
@@ -501,7 +512,7 @@ while len(procSet) > 0:
 	
 	if ii >= len(procSet):
 		ii = 0
-		print(f"Waiting on say.exe processes to finish, {len(procSet)} remaing")
+		print(f"Waiting on 'say' processes to finish, {len(procSet)} remaining")
 		time.sleep(0.5)
 
 
@@ -563,12 +574,12 @@ for fooPartName in partNamesToOutput:
 	print(f"Exporting:   outputs/{songTitle}/_tracks/{fooPartName}.wav")
 	outputAudio.export(f"outputs/{songTitle}/_tracks/{fooPartName}.wav", format='wav') #export mixed  audio file
 
-audioLenth = max( [outputAudioDict[fooPartName].duration_seconds for fooPartName in partNamesToOutput] )
+audioLength = max( [outputAudioDict[fooPartName].duration_seconds for fooPartName in partNamesToOutput] )
 
-print(f"audioLenth:{audioLenth}")
+print(f"audioLength:{audioLength}")
 
 # Final mix
-outputAudio = AudioSegment.silent(audioLenth*1000)
+outputAudio = AudioSegment.silent(audioLength*1000)
 for fooPartName in partNamesToOutput:
 	readWavFileName = f"outputs/{songTitle}/_tracks/{fooPartName}.wav"
 	trackAudio = AudioSegment.from_file(readWavFileName)
@@ -583,7 +594,7 @@ outputAudio.export(f"outputs/{songTitle}/_finished/{songTitle}.wav", format='wav
 # Generate spectrogram visualization if -vis tag is included
 if '-vis' in sys.argv[1]:
 	import subprocess as sp
-	sp.run(f"python3 generateSpectrograms.py {songTitle}", shell=True)
+	sp.run(f"{sys.executable} generateSpectrograms.py {songTitle}", shell=True)
 
 
 
