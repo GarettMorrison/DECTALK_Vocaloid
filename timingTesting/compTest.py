@@ -10,6 +10,16 @@ from matplotlib import pyplot as plt
 
 from testParameters import *
 
+say = shutil.which("say.exe")
+if say:
+    say = f"{say} -w"
+else:
+    say = shutil.which("dtsay")
+    if not say:
+        print('DECtalk say program not found')
+        exit(1)
+    say = f"{say} -fo"
+
 print(f"Initialing .wav files")
 # Setup tests
 testIteration = 0
@@ -44,7 +54,7 @@ for voiceComm_ind in range(len(voiceComm_TestSet)):
 				fooTestTxt.close()
 
 				
-				DEC_proc = sp.Popen(f".{os.sep}say.exe -w {outputFilename} < {inputFilename}", shell=True) # Finally actual run DECtalk! Opens a bunch of processes to run every file in parallel
+				DEC_proc = sp.Popen(f"{say} {outputFilename} < {inputFilename}", shell=True) # Finally actual run DECtalk! Opens a bunch of processes to run every file in parallel
 				procSet.append(DEC_proc)
 
 				print(f"Running Test {testIteration}")
@@ -60,7 +70,7 @@ while len(procSet) > 0:
 	
 	if ii >= len(procSet):
 		ii = 0
-		print(f"Waiting on say.exe processes to finish, {len(procSet)} remaing")
+		print(f"Waiting on 'say' processes to finish, {len(procSet)} remaining")
 		time.sleep(0.5)
 
 

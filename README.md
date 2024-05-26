@@ -1,8 +1,19 @@
 # DECTALK Choir
-Making a retro speech synth sing! Able to work with polyphonic choral music. All written in Python3 and runs on Windows. Also generate spectrogram animation for the voices. 
+Making a retro speech synth sing! Able to work with polyphonic choral music. All written in Python3 and runs on Windows and macOS. Also generate spectrogram animation for the voices. 
 
 ## Background
-Dectalk is a text to speech synthesizer released in 1983. It was famously used by Steven Hawking, and was included in the game Moonbase Alpha to read chat messages aloud. The system allows pronunciation phonemes, even inputting specific pitches and durations. Players of Moonbase Alpha quickly realized that these could be used to sing songs. I think this is absolutely delightful, and really wanted to play with this myself. Rather than copy-paste lines of text into the game, I tracked down a standard version of DECTalk and compiled it line by line. 
+DECtalk is a text to speech synthesizer released in 1983. It was famously used by Steven Hawking, and was included in the game Moonbase Alpha to read chat messages aloud. The system allows pronunciation phonemes, even inputting specific pitches and durations. Players of Moonbase Alpha quickly realized that these could be used to sing songs. I think this is absolutely delightful, and really wanted to play with this myself. Rather than copy-paste lines of text into the game, I tracked down a standard version of DECTalk and compiled it line by line. 
+
+## Requirements
+
+- Python
+- FFmpeg (used by pydub)
+- DECtalk (`say`)
+
+Run `pip3 install -r requirements.txt` to install the required Python libraries.
+
+The DECtalk `say` program is already included in the repository for Windows.
+On macOS, it can be installed via [MacPorts](https://ports.macports.org/port/dectalk/).
 
 ## Usage
 Each song is saved in a folder under /songs. Before compilation, specify notes (.mid), lyrics (lyrics/*.txt), and settings (settings.yaml). Run choir.py to compile. 

@@ -24,7 +24,7 @@ framesPerSecond = 30 # Output FPS
 # Make sure song is specified in command
 if len(sys.argv) < 2:
     print('No song specified')
-    exit()
+    exit(1)
 
 songTitle = sys.argv[-1]
 
@@ -34,7 +34,7 @@ if not songTitle in os.listdir('songs'):
     for foo in os.listdir('songs'):
         print(f"   {foo}")
     print(f'Song {songTitle} not found')
-    exit()
+    exit(1)
 
 # Load settings.yaml from within folder
 import yaml
@@ -43,7 +43,7 @@ try:
     settings_yaml = yaml.safe_load(file)
 except:
     print(f"songs/{songTitle}/settings.yaml NOT FOUND")
-    exit()
+    exit(1)
 
 # Folder for output files
 os.makedirs(f"outputs/{songTitle}/_animation", exist_ok = True)
